@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# The model for Post entity
 class Post < ApplicationRecord
   include StringColumnsValidation
 
@@ -7,6 +10,6 @@ class Post < ApplicationRecord
 
   # Validations
   validate_short_string_columns :title, presence: true
-  validate_long_string_column :body, presence: true, maximum: 1000,  allow_blank: false
+  validate_long_string_column :body, presence: true, maximum: 1000, allow_blank: false
   validates :ip, presence: true
 end

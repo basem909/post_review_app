@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration file for creating table of ratings.
 class CreateRatings < ActiveRecord::Migration[7.1]
   def change
     create_table :ratings do |t|

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# This the model class for user entity
 class User < ApplicationRecord
   include StringColumnsValidation
 
