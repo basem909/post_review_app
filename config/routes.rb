@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
       # posts
       post 'posts', to: "posts#create"
+      get 'posts/ip-groups', to: "posts#ips_with_multiple_authors"
 
       # ratings
       post 'ratings', to:"ratings#create"

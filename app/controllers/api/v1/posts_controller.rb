@@ -13,6 +13,19 @@ module Api
     end
   end
 
+  def ips_with_multiple_authors
+    ips_with_authors = Post.includes(:user)
+                      .group(:ip)
+                      .having('COUNT(DISTINCT user_id) > 1')
+                      .pluck(:ip, 'array_agg(users.login)')
+
+result = ips_with_authors.map do |ip, authors|
+  { ip: ip, authors: authors }
+end
+
+render json: result
+  end
+
   private
 
   def set_user

@@ -16,7 +16,7 @@ class Api::V1::RatingsController < ApplicationController
   end
 
   def top_posts
-    n = params[:n].to_i # Number of top posts to retrieve
+    n = params[:n].to_i 
         posts = Post.left_joins(:ratings)
                     .group(:id)
                     .select("posts.id, posts.title, posts.body, AVG(ratings.value) AS average_rating")
@@ -51,6 +51,7 @@ class Api::V1::RatingsController < ApplicationController
     end
   end
 
+  # validating that rating is the user's first on the post
   def is_first_ratings
     rating = Rating.find_by(user_id: params[:user_id], post_id: params[:post_id])
     if rating
