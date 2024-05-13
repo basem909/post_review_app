@@ -9,7 +9,15 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
-      post 'posts' , to: "posts#create"
+      # users
+      post "users", to: "users#create"
+
+      # posts
+      post 'posts', to: "posts#create"
+
+      # ratings
+      post 'ratings', to:"ratings#create"
+      get 'ratings/top-rated', to: "ratings#top_posts"
     end
   end
 end

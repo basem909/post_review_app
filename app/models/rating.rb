@@ -1,5 +1,4 @@
 class Rating < ApplicationRecord
-  include NumberColumnsValidation 
 
   # Relations
   belongs_to :post

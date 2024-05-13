@@ -1,10 +1,12 @@
-class PostsController < ApplicationController
+module Api
+  module V1
+    class PostsController < ApplicationController
   before_action :set_user, only: [:create]
 
   def create
     post = @user.posts.new(post_params)
 
-    if post.save
+    if post.save!
       render json: { message: "Post created successfully!", post: post, user: @user}, status: :ok
     else
       render json: { error: post.errors }, status: :unprocessable_entity
@@ -23,4 +25,6 @@ class PostsController < ApplicationController
   def post_params
     params.permit(:title, :body, :ip)
   end
+end
+end
 end

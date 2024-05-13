@@ -59,7 +59,7 @@ module StringColumnsValidation
     #   validate_long_string_column(:description, :comments, presence: true, allow_blank: false, characters_restriction: true)
     def validate_long_string_column(*columns, presence: false, maximum: 500,  allow_blank: true, characters_restriction: false)
       columns.each do |column|
-        validates :description, length: { minimum: 3, maximum: maximum }, allow_blank: allow_blank
+        validates column, length: { minimum: 3, maximum: maximum }, allow_blank: allow_blank
         validates column, presence: true if presence
         validates column, format: { with: /\A[a-zA-Z\s_-]+\z/, message: "Only allows letters, spaces, underscores, and dashes" } if characters_restriction
       end
