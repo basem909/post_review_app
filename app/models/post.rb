@@ -3,7 +3,7 @@ class Post < ApplicationRecord
 
   # Relations
   belongs_to :user
-  has_many :ratings
+  has_many :ratings, dependent: :destroy
 
   # Validations
   validate_short_string_columns :title, presence: true
