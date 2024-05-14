@@ -6,7 +6,7 @@ module Api
     class RatingsController < ApplicationController
       before_action :set_user, only: [:create]
       before_action :set_post, only: [:create]
-      before_action :is_first_ratings, only: [:create]
+      before_action :first_ratings?, only: [:create]
 
       def create
         # remember to validate existence

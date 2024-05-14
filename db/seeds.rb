@@ -1,16 +1,5 @@
-# frozen_string_literal: true
-
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
 require 'json'
-require 'open-uri'
+require 'net/http'
 
 def create_users(num_users)
   num_users.times do |n|
@@ -28,24 +17,43 @@ def create_posts(num_posts, num_ratings)
     ip = ips.sample
 
     post = {
-      title: "Post #{n + 1}",
-      body: "This is post #{n + 1}",
-      user_id: user.id,
-      ip: ip
+        title: "Post #{n + 1}",
+        body: "This is post #{n + 1}",
+        login: user.login,
+        ip: ip
     }
 
     # Create the post
-    response = execute_api_request('/api/v1/posts', 'POST', post)
-    post_id = JSON.parse(response)['id']
+    begin
+      post_response = execute_api_request('/api/v1/posts', 'POST', post)
+      response_data = JSON.parse(post_response)
+      post_id = response_data['post']['id']
+    rescue StandardError => e
+      puts "Failed to create post. Error: #{e.message}"
+      next
+    end
 
     # Create ratings for the post
-    if n < num_ratings
-      rating = {
+    next unless n < num_ratings
+    user_id = user.id.to_i - 1
+
+    rating = {
         post_id: post_id,
-        user_id: user.id,
+        user_id: user_id,
         value: rand(1..5)
-      }
-      execute_api_request('/api/v1/ratings', 'POST', rating)
+    }
+
+    begin
+      rating_response = execute_api_request('/api/v1/ratings', 'POST', rating)
+      rating_data = JSON.parse(rating_response)
+
+      if rating_data.key?("message")
+        puts "Rating created successfully!"
+      else
+        puts "Failed to create rating. Error: #{rating_data['error']}"
+      end
+    rescue StandardError => e
+      puts "Failed to create rating. Error: #{e.message}"
     end
   end
 end
@@ -72,7 +80,7 @@ def execute_api_request(endpoint, method, data)
 end
 
 # Create users
-create_users(100)
+# create_users(100)
 
 # Create posts and ratings
 create_posts(200_000, 150_000)
