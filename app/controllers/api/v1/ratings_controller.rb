@@ -33,7 +33,6 @@ module Api
                     .limit(n)
                     .offset((page - 1) * per_page)
 
-
         post_attributes = posts.map do |post|
           { id: post.id, title: post.title, body: post.body }
         end

@@ -1,10 +1,14 @@
+# frozen_string_literal: true
+# rubocop:disable all
+
+
 require 'json'
 require 'net/http'
 
 def create_users(num_users)
   num_users.times do |n|
     login = "user#{n + 1}"
-    User.create!(login: login)
+    User.create!(login:)
   end
 end
 
@@ -17,10 +21,10 @@ def create_posts(num_posts, num_ratings)
     ip = ips.sample
 
     post = {
-        title: "Post #{n + 1}",
-        body: "This is post #{n + 1}",
-        login: user.login,
-        ip: ip
+      title: "Post #{n + 1}",
+      body: "This is post #{n + 1}",
+      login: user.login,
+      ip:
     }
 
     # Create the post
@@ -35,20 +39,21 @@ def create_posts(num_posts, num_ratings)
 
     # Create ratings for the post
     next unless n < num_ratings
+
     user_id = user.id.to_i - 1
 
     rating = {
-        post_id: post_id,
-        user_id: user_id,
-        value: rand(1..5)
+      post_id:,
+      user_id:,
+      value: rand(1..5)
     }
 
     begin
       rating_response = execute_api_request('/api/v1/ratings', 'POST', rating)
       rating_data = JSON.parse(rating_response)
 
-      if rating_data.key?("message")
-        puts "Rating created successfully!"
+      if rating_data.key?('message')
+        puts 'Rating created successfully!'
       else
         puts "Failed to create rating. Error: #{rating_data['error']}"
       end
