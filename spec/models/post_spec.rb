@@ -28,7 +28,6 @@ RSpec.describe 'Post', type: :model do
   end
 
   describe 'associations' do
-
     it 'responds to user' do
       expect(Post.new).to respond_to(:user)
     end

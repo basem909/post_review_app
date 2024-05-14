@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Api
   module V1
     # Controller for handling API requests related to users.
@@ -8,9 +6,9 @@ module Api
         user = User.new(user_params)
 
         if user.save
-          render json: { message: 'User created successfully!', user: }, status: :ok
+          render json: { message: 'User created successfully!', user: user }, status: :ok
         else
-          render json: { error: user.errors }
+          render json: { error: user.errors }, status: :unprocessable_entity
         end
       end
 
