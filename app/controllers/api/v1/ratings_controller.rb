@@ -33,7 +33,6 @@ module Api
                     .limit(n)
                     .offset((page - 1) * per_page)
 
-        total_count = Post.left_joins(:ratings).group(:id).count
 
         post_attributes = posts.map do |post|
           { id: post.id, title: post.title, body: post.body }
@@ -42,7 +41,6 @@ module Api
         paginated_response = {
           current_page: page,
           per_page:,
-          total_count:,
           top_posts: post_attributes
         }
 
