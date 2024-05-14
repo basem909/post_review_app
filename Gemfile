@@ -34,6 +34,9 @@ gem 'bootsnap', require: false
 # Apply linter rules on code
 gem 'rubocop', '>= 1.0', '< 2.0'
 
+# Apply pagination
+gem 'kaminari'
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 

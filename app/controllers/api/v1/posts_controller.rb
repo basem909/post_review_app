@@ -16,18 +16,30 @@ module Api
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
       def ips_with_multiple_authors
+        page = (params[:page] || 1).to_i
+        per_page = (params[:per_page] || 10).to_i
+
         ips_with_authors = Post.includes(:user)
                                .group(:ip)
                                .having('COUNT(DISTINCT user_id) > 1')
                                .pluck(:ip, 'array_agg(users.login)')
 
-        result = ips_with_authors.map do |ip, authors|
-          { ip:, authors: }
-        end
+        total_count = ips_with_authors.size
 
-        render json: result
+        paginated_ips_with_authors = ips_with_authors.slice((page - 1) * per_page, per_page)
+
+        paginated_response = {
+          current_page: page,
+          per_page:,
+          total_count:,
+          ips_with_authors: paginated_ips_with_authors
+        }
+
+        render json: paginated_response
       end
+      # rubocop:enable Metrics/MethodLength
 
       private
 

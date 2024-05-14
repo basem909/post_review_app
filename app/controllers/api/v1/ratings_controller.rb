@@ -19,20 +19,37 @@ module Api
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/AbcSize
       def top_posts
-        n = params[:n].to_i
+        n = (params[:n] || 10).to_i
+        page = (params[:page] || 1).to_i
+        per_page = (params[:per_page] || 10).to_i
+
         posts = Post.left_joins(:ratings)
                     .group(:id)
                     .select('posts.id, posts.title, posts.body, AVG(ratings.value) AS average_rating')
                     .order('average_rating DESC')
                     .limit(n)
+                    .offset((page - 1) * per_page)
+
+        total_count = Post.left_joins(:ratings).group(:id).count
 
         post_attributes = posts.map do |post|
           { id: post.id, title: post.title, body: post.body }
         end
 
-        render json: { top_posts: post_attributes }, status: :ok
+        paginated_response = {
+          current_page: page,
+          per_page:,
+          total_count:,
+          top_posts: post_attributes
+        }
+
+        render json: paginated_response, status: :ok
       end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
 
       private
 
