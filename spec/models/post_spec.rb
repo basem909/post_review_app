@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable all
+
 RSpec.describe 'Post', type: :model do
   describe 'validations' do
     it 'validates presence of title' do

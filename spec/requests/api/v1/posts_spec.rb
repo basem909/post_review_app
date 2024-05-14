@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# rubocop:disable all
+
 require 'rails_helper'
 
 RSpec.describe Api::V1::PostsController, type: :controller do

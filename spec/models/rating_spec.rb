@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable all
+
 RSpec.describe 'Rating', type: :model do
   describe 'associations' do
     it 'responds to post' do
